@@ -1,0 +1,31 @@
+useDynLib(MRcare, .registration=TRUE)
+importFrom(Rcpp, evalCpp)
+
+importFrom(stats, complete.cases, dnorm, pnorm, qnorm, quantile, rmultinom, rnorm, var)
+importFrom(utils, write.table)
+importFrom(gridExtra, grid.arrange)
+importFrom(rappdirs, user_cache_dir)
+
+importFrom(ggplot2, aes, geom_errorbar, geom_errorbarh, geom_point, 
+           geom_abline, geom_vline, geom_text, annotate, geom_hline,
+           ggplot, scale_color_manual, labs, theme_bw, theme)
+
+importFrom(RcppArmadillo, armadillo_version)
+importFrom(grDevices, colors)
+
+
+export(mr_care)
+export(preprocess_gwas_data)
+export(configure_mrcare)
+export(get_mrcare_config)
+export(RIVW)
+export(CARE2_boot)
+export(plot_care)
+export(plot_scatter)
+export(plot_funnel)
+export(plot_combined)
+
+S3method(summary, mrcare)
+S3method(print, mrcare)
+
+

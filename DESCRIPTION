@@ -1,0 +1,36 @@
+Package: MRcare
+Type: Package
+Title: Causal Analysis with Randomized Estimators (CARE)
+Version: 1.1
+Date: 2025-03-05
+Author: Your Name
+Maintainer: First Last <wwwxxx@gmail.com>
+Description: In the past decade, the increased availability of genome-wide association studies summary data has popularized Mendelian Randomization (MR) for conducting causal inference. MR analyses, incorporating genetic variants as instrumental variables, are known for their robustness against reverse causation bias and unmeasured confounders. Nevertheless, classical MR analyses utilizing summary data may still produce biased causal effect estimates due to the winner’s curse and pleiotropy issues. To address these two issues and establish valid causal conclusions, we propose a unified robust Mendelian Randomization framework with summary data, which systematically removes the winner’s curse and screens out invalid genetic instruments with pleiotropic effects. Unlike existing robust MR literature, our framework delivers valid statistical inference on the causal effect without requiring the genetic pleiotropy effects to follow any parametric distribution or relying on perfect instrument screening property. Under appropriate conditions, we demonstrate that our proposed estimator converges to a normal distribution, and its variance can be well estimated. We have created this package to let users apply our new methods (CARE and RIVW) easily.
+License: GPL (>= 3)
+URL: https://github.com/ChongWuLab/MRcare, https://chongwulab.github.io/MRcare
+BugReports: https://github.com/ChongWuLab/MRcare/issues
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports: 
+    Rcpp (>= 1.0.13),
+    RcppArmadillo,
+    ggplot2,
+    data.table,
+    TwoSampleMR,
+    stats,
+    utils,
+    grDevices,
+    gridExtra,
+    rappdirs
+LinkingTo: 
+    Rcpp, 
+    RcppArmadillo
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+BuildVignettes: true

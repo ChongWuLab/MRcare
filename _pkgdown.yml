@@ -1,0 +1,95 @@
+title: MRcare
+url: https://chongwulab.github.io/MRcare
+template:
+  bootstrap: 5
+  bootswatch: flatly
+  bslib:
+    primary: "#0054AD"
+    navbar-light-brand-color: "#0054AD"
+    navbar-light-brand-hover-color: "#003380"
+    navbar-light-hover-color: "#003380"
+  includes:
+    in_header: |
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+  opengraph:
+    image:
+      src: man/figures/logo.png
+      alt: "MRcare logo"
+  twitter:
+    creator: "@yourtwitterhandle"
+    card: summary_large_image
+
+# Add this new section for the logo
+development:
+  mode: auto
+  version_label: info
+  version_tooltip: "MRcare version"
+
+navbar:
+  structure:
+    left:  [intro, reference, tutorials, news]
+    right: [search, github]
+  components:
+    intro:
+      text: "Introduction"
+      href: articles/introduction.html
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/ChongWuLab/MRcare
+      aria-label: GitHub
+    # Add a logo component here
+    logo:
+      icon: "fas fa-home"
+      href: index.html
+      aria-label: "MRcare home"
+
+
+search:
+  enabled: true
+  engine: lunr
+
+home:
+  sidebar:
+    structure: [links, license, community, citation, authors, dev]
+    components:
+      citation:
+        title: Citation
+        text: >
+          Xie, Z., Zhang, W., Wang, J., & Wu, C. (2023). Winner's Curse Free Robust Mendelian Randomization with Summary Data. arXiv preprint arXiv:2309.04957.
+
+reference:
+- title: "Package Documentation"
+  desc: "Package overview and introduction"
+  contents:
+  - MRcare-package
+- title: "Main Functions"
+  desc: "Primary functions for MR analysis"
+  contents:
+  - mr_care
+  - RIVW
+  - CARE2_boot
+- title: "Data Processing"
+  desc: "Functions for preprocessing GWAS data"
+  contents:
+  - preprocess_gwas_data
+- title: "Configuration"
+  desc: "Configuration functions"
+  contents:
+  - configure_mrcare
+  - get_mrcare_config
+  - check_hf_connection
+- title: "Visualization"
+  desc: "Functions for visualizing results"
+  contents: 
+  - plot_care
+  - plot_scatter
+  - plot_funnel
+  - plot_combined
+- title: "Utility Functions"
+  desc: "Helper functions and methods"
+  contents:
+  - summary.mrcare
+  - print.mrcare
+  - format_care_results
+  - extract_independent_variants
+  
