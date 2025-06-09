@@ -122,12 +122,9 @@ navbar:
   type: light
   bg: light
   structure:
-    left:  [intro, reference, articles, tutorials, news]
+    left:  [reference, articles, tutorials, news]
     right: [search, github]
   components:
-    intro:
-      text: "Introduction"
-      href: articles/introduction.html
     github:
       icon: fab fa-github fa-lg
       href: https://github.com/ChongWuLab/MRcare
@@ -145,7 +142,7 @@ home:
       citation:
         title: Citation
         text: >
-          Xie, Z., Zhang, W., Wang, J., & Wu, C. (2023). Winner's Curse Free Robust Mendelian Randomization with Summary Data. arXiv preprint arXiv:2309.04957.
+          Last, F., Last2, F2, Last 3, F3, Last 4, F4. (2025). Winner's Curse Free Robust Mendelian Randomization with Summary Data. Journal (placeholder).
 
 reference:
 - title: "Package Documentation"

@@ -13,7 +13,6 @@
 #' @return A list containing the causal estimate, standard error, p-value, and number of SNPs
 #'
 #'  @export
-
 RIVW <- function(gamma.exp_sel, gamma.out_sel, se.exp_sel, se.out_sel, etamean = 0.5, sel.pthr = 5e-5,overlap.mat = NULL) {
     
     if(!is.null(overlap.mat)) {

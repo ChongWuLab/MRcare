@@ -221,11 +221,11 @@ CARE addresses winner's curse bias through re-randomization approaches while acc
 For detailed information about the CARE method, please refer to:
 
 ```
-@article{xie2023winners,
+@article{author2025winners,
   title={Winner's Curse Free Robust Mendelian Randomization with Summary Data},
-  author={Xie, Zhongming and Zhang, Wanheng and Wang, Jingshen and Wu, Chong},
-  journal={arXiv preprint arXiv:2309.04957},
-  year={2023}
+  author={Anonymous authors (placehoder)},
+  journal={Journal (placeholder)},
+  year={2025}
 }
 ```
 
