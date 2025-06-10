@@ -216,6 +216,112 @@ CARE addresses winner's curse bias through re-randomization approaches while acc
 4. **Provides valid statistical inference**: Maintains validity even when IV screening is imperfect
 5. **Computationally efficient**: Core algorithms implemented in C++ for performance
 
+## Quick Example: BMI → Coronary Artery Disease
+
+Here's a complete example analyzing the causal effect of Body Mass Index (BMI) on Coronary Artery Disease (CAD) using pre-processed GWAS summary statistics:
+
+```r
+# Load required libraries
+library(MRcare)
+library(ggplot2)
+
+# First-time setup (run once)
+configure_mrcare()
+
+# Download pre-processed GWAS data
+exposure_url <- "https://huggingface.co/datasets/kunrzzz/mrcare-quickstart-data/resolve/main/bmi_exposure_for_mrcare.txt"
+outcome_url <- "https://huggingface.co/datasets/kunrzzz/mrcare-quickstart-data/resolve/main/cad_outcome_for_mrcare.txt"
+
+download.file(exposure_url, destfile = "bmi_exposure_data.txt")
+download.file(outcome_url, destfile = "cad_outcome_data.txt")
+
+# Run MR-CARE analysis
+results <- mr_care(
+  exposure_data = "bmi_exposure_data.txt",
+  outcome_data = "cad_outcome_data.txt",
+  p_threshold = 5e-5
+)
+
+# View results
+print(results)
+```
+
+### Example Results
+
+The analysis provides causal effect estimates from both BIC-selected and RIVW methods:
+
+```
+===================================================================
+ MRcare: Causal Analysis Robust to plEiotropy for Mendelian Randomization
+===================================================================
+
+Analysis Details:
+- Exposure sample size: 461,460
+- Outcome sample size: 184,305  
+- Total significant SNPs: 228,477
+- Independent variants selected: 985
+- Final harmonized instruments: 899
+- Analysis time: 2.44 minutes
+
+CAUSAL EFFECT ESTIMATES:
+Method          Estimate        S.E.            P-value
+----------------------------------------------------------------
+CARE (BIC):     0.4031          0.0484          8.5444e-17
+RIVW:           0.3955          0.0542          3.0774e-13
+----------------------------------------------------------------
+
+BIC-selected Model (Recommended):
+- Causal estimate: 0.403 
+- Standard error: 0.048
+- P-value: 8.54e-17
+- Valid instruments: 899/899
+- Odds ratio: 1.50 (per unit BMI increase)
+
+RIVW Estimator:
+- Causal estimate: 0.396
+- Standard error: 0.054  
+- P-value: 3.08e-13
+- Instruments used: 899
+- Odds ratio: 1.49 (per unit BMI increase)
+```
+
+### Visualization
+
+Generate publication-ready plots to visualize your results:
+
+```r
+# Forest plot comparing estimates (with odds ratios for disease outcomes)
+forest_plot <- plot_care(results, exponentiate = TRUE, xlab = "Odds Ratio for CAD")
+ggsave("mrcare_forest_plot.png", plot = forest_plot, width = 8, height = 5)
+
+# Scatter plot showing instrument effects
+scatter_plot <- plot_scatter(results, highlight_invalid = TRUE)
+ggsave("mrcare_scatter_plot.png", plot = scatter_plot, width = 7, height = 6)
+
+# Funnel plot for pleiotropy assessment
+funnel_plot <- plot_funnel(results)
+ggsave("mrcare_funnel_plot.png", plot = funnel_plot, width = 7, height = 6)
+```
+
+**Forest Plot**: Comparison of causal effect estimates
+<p align="center">
+<img src="mrcare_forest_plot.png" width="500">
+</p>
+
+**Scatter Plot**: Genetic instrument effects on exposure vs. outcome
+<p align="center">
+<img src="mrcare_scatter_plot.png" width="500">
+</p>
+
+**Funnel Plot**: Assessment of horizontal pleiotropy
+<p align="center">
+<img src="mrcare_funnel_plot.png" width="500">
+</p>
+
+### Interpretation
+
+The results provide strong evidence for a causal effect of BMI on coronary artery disease risk. Each unit increase in BMI (kg/m²) is associated with approximately a 50% increase in CAD odds (OR ≈ 1.50). 
+
 ## References
 
 For detailed information about the CARE method, please refer to:

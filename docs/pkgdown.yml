@@ -2,7 +2,7 @@ pandoc: 3.6.4
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2025-06-09T18:14Z
+last_built: 2025-06-10T19:55Z
 urls:
   reference: https://chongwulab.github.io/MRcare/reference
   article: https://chongwulab.github.io/MRcare/articles

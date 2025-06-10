@@ -388,6 +388,103 @@
 </div>
 </div>
 <div class="section level2">
+<h2 id="quick-example-bmi--coronary-artery-disease">Quick Example: BMI → Coronary Artery Disease<a class="anchor" aria-label="anchor" href="#quick-example-bmi--coronary-artery-disease"></a>
+</h2>
+<p>Here’s a complete example analyzing the causal effect of Body Mass Index (BMI) on Coronary Artery Disease (CAD) using pre-processed GWAS summary statistics:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load required libraries</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">MRcare</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># First-time setup (run once)</span></span>
+<span><span class="fu"><a href="reference/configure_mrcare.html">configure_mrcare</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Download pre-processed GWAS data</span></span>
+<span><span class="va">exposure_url</span> <span class="op">&lt;-</span> <span class="st">"https://huggingface.co/datasets/kunrzzz/mrcare-quickstart-data/resolve/main/bmi_exposure_for_mrcare.txt"</span></span>
+<span><span class="va">outcome_url</span> <span class="op">&lt;-</span> <span class="st">"https://huggingface.co/datasets/kunrzzz/mrcare-quickstart-data/resolve/main/cad_outcome_for_mrcare.txt"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span><span class="va">exposure_url</span>, destfile <span class="op">=</span> <span class="st">"bmi_exposure_data.txt"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span><span class="va">outcome_url</span>, destfile <span class="op">=</span> <span class="st">"cad_outcome_data.txt"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Run MR-CARE analysis</span></span>
+<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mr_care.html">mr_care</a></span><span class="op">(</span></span>
+<span>  exposure_data <span class="op">=</span> <span class="st">"bmi_exposure_data.txt"</span>,</span>
+<span>  outcome_data <span class="op">=</span> <span class="st">"cad_outcome_data.txt"</span>,</span>
+<span>  p_threshold <span class="op">=</span> <span class="fl">5e-5</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># View results</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="example-results">Example Results<a class="anchor" aria-label="anchor" href="#example-results"></a>
+</h3>
+<p>The analysis provides causal effect estimates from both BIC-selected and RIVW methods:</p>
+<pre><code>===================================================================
+ MRcare: Causal Analysis Robust to plEiotropy for Mendelian Randomization
+===================================================================
+
+Analysis Details:
+- Exposure sample size: 461,460
+- Outcome sample size: 184,305
+- Total significant SNPs: 228,477
+- Independent variants selected: 985
+- Final harmonized instruments: 899
+- Analysis time: 2.44 minutes
+
+CAUSAL EFFECT ESTIMATES:
+Method          Estimate        S.E.            P-value
+----------------------------------------------------------------
+CARE (BIC):     0.4031          0.0484          8.5444e-17
+RIVW:           0.3955          0.0542          3.0774e-13
+----------------------------------------------------------------
+
+BIC-selected Model (Recommended):
+- Causal estimate: 0.403
+- Standard error: 0.048
+- P-value: 8.54e-17
+- Valid instruments: 899/899
+- Odds ratio: 1.50 (per unit BMI increase)
+
+RIVW Estimator:
+- Causal estimate: 0.396
+- Standard error: 0.054
+- P-value: 3.08e-13
+- Instruments used: 899
+- Odds ratio: 1.49 (per unit BMI increase)</code></pre>
+</div>
+<div class="section level3">
+<h3 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a>
+</h3>
+<p>Generate publication-ready plots to visualize your results:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Forest plot comparing estimates (with odds ratios for disease outcomes)</span></span>
+<span><span class="va">forest_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_care.html">plot_care</a></span><span class="op">(</span><span class="va">results</span>, exponentiate <span class="op">=</span> <span class="cn">TRUE</span>, xlab <span class="op">=</span> <span class="st">"Odds Ratio for CAD"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"mrcare_forest_plot.png"</span>, plot <span class="op">=</span> <span class="va">forest_plot</span>, width <span class="op">=</span> <span class="fl">8</span>, height <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Scatter plot showing instrument effects</span></span>
+<span><span class="va">scatter_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_scatter.html">plot_scatter</a></span><span class="op">(</span><span class="va">results</span>, highlight_invalid <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"mrcare_scatter_plot.png"</span>, plot <span class="op">=</span> <span class="va">scatter_plot</span>, width <span class="op">=</span> <span class="fl">7</span>, height <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Funnel plot for pleiotropy assessment</span></span>
+<span><span class="va">funnel_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_funnel.html">plot_funnel</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"mrcare_funnel_plot.png"</span>, plot <span class="op">=</span> <span class="va">funnel_plot</span>, width <span class="op">=</span> <span class="fl">7</span>, height <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
+<strong>Forest Plot</strong>: Comparison of causal effect estimates
+<p align="center">
+<img src="mrcare_forest_plot.png" width="500"></p>
+<strong>Scatter Plot</strong>: Genetic instrument effects on exposure vs. outcome
+<p align="center">
+<img src="mrcare_scatter_plot.png" width="500"></p>
+<strong>Funnel Plot</strong>: Assessment of horizontal pleiotropy
+<p align="center">
+<img src="mrcare_funnel_plot.png" width="500"></p>
+</div>
+<div class="section level3">
+<h3 id="interpretation">Interpretation<a class="anchor" aria-label="anchor" href="#interpretation"></a>
+</h3>
+<p>The results provide strong evidence for a causal effect of BMI on coronary artery disease risk. Each unit increase in BMI (kg/m²) is associated with approximately a 50% increase in CAD odds (OR ≈ 1.50).</p>
+</div>
+</div>
+<div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <p>For detailed information about the CARE method, please refer to:</p>
